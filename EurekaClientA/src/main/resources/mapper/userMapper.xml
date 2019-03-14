@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.chenhao.mapper.UserDao">
+    <resultMap id="baseMap" type="com.chenhao.entity.UserDTO">
+        <id column="id" property="id" jdbcType="VARCHAR"/>
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="pwd" property="pwd" jdbcType="VARCHAR"/>
+        <result column="age" property="age" jdbcType="INTEGER"/>
+        <result column="gender" property="gender" jdbcType="CHAR"/>
+        <result column="phone" property="phone" jdbcType="VARCHAR"/>
+        <result column="idno" property="idNo" jdbcType="VARCHAR"/>
+        <result column="email" property="email" jdbcType="VARCHAR"/>
+        <result column="real_name" property="realName" jdbcType="VARCHAR"/>
+        <result column="address" property="address" jdbcType="VARCHAR"/>
+        <result column="birth" property="birth" jdbcType="VARCHAR"/>
+        <result column="status" property="status" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="base_column_list">
+       id,name,pwd,age,gender,phone,idno,email,real_name,address,birth,status
+    </sql>
+
+    <insert id="insert" parameterType="com.chenhao.entity.UserDTO">
+      insert into t_user_info(
+         id,
+         name,
+         pwd,
+         age,
+         gender,
+         phone,
+         idno,
+         email,
+         real_name,
+         address,
+         birth,
+         status
+      ) values (
+         #{id},
+         #{name},
+         #{pwd},
+         #{age},
+         #{gender},
+         #{phone},
+         #{idNo},
+         #{email},
+         #{realName},
+         #{address},
+         #{birth},
+         '0'
+      )
+   </insert>
+
+    <select id="findById" parameterType="java.lang.String" resultMap="baseMap">
+        select
+        <include refid="base_column_list"/>
+        from t_user_info
+        <where>
+            id=#{id}
+        </where>
+    </select>
+
+    <select id="findAll" parameterType="java.util.HashMap" resultMap="baseMap">
+        select
+        <include refid="base_column_list"/>
+        from t_user_info order by created_date
+    </select>
+
+    <update id="update" parameterType="com.chenhao.entity.UserDTO">
+        update t_user_info
+        <set>
+            <if test="pwd!=null">pwd=#{pwd},</if>
+            <if test="age !=0">age=#{age},</if>
+            <if test="gender!=null">gender=#{gender},</if>
+            <if test="phone!=null">phone=#{phone},</if>
+            <if test="idNo!=null">idno=#{idNo},</if>
+            <if test="email!=null">email=#{email},</if>
+            <if test="realName!=null">real_name=#{realName},</if>
+            <if test="status!=null">status=#{status},</if>
+            <if test="address!=null">address=#{address},</if>
+            <if test="birth!=null">birth=#{birth},</if>
+        </set>
+        WHERE id=#{id}
+    </update>
+
+    <delete id="deleteOne" parameterType="java.lang.String">
+       update t_user_info set status='1' where id=#{id}
+   </delete>
+</mapper>

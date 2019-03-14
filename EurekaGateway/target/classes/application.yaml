@@ -1,0 +1,17 @@
+server:
+  port: 5555
+spring:
+  application:
+    name: gateway-zuul
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://peer1:1111/eureka/,http://peer2:1112/eureka/
+zuul:
+  routes:
+    orders:
+      path: /service-order/**
+      serviceId: service-order
+    shares:
+      path: /service-share/**
+      serviceId: service-share
